@@ -1,0 +1,20 @@
+USE [DB_A42552_ArxyaArsa]
+GO
+
+/****** Object:  Table [dbo].[States]    Script Date: 8/15/2018 10:44:43 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Drzava](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Ime] [nvarchar](255) NOT NULL,
+	[Skracenica] [nvarchar](255) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO

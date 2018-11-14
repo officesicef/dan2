@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_A42552_ArxyaArsaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bolest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Latinski_Naziv" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Zarazna" Type="bit" Nullable="false" />
+          <Property Name="Trajanje" Type="int" Nullable="false" />
+          <Property Name="Zastita" Type="bit" Nullable="false" />
+          <Property Name="Tip" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Akutna" Type="bit" Nullable="false" />
+          <Property Name="Prioritet" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Drzava">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Skracenica" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Epidemiolog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Licni_Broj" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prezime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lozinka" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Grad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Lokacija_X" Type="float" Nullable="false" />
+          <Property Name="Lokacija_Y" Type="float" Nullable="false" />
+          <Property Name="Broj_Stanovnika" Type="bigint" />
+          <Property Name="DrzavaId" Type="int" />
+        </EntityType>
+        <EntityType Name="Instanca_Bolesti">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lokacija_X" Type="real" Nullable="false" />
+          <Property Name="Lokacija_Y" Type="real" Nullable="false" />
+          <Property Name="Pol" Type="nvarchar" MaxLength="1" Nullable="false" />
+          <Property Name="Starost" Type="int" Nullable="false" />
+          <Property Name="Otkrivena" Type="datetime" Nullable="false" />
+          <Property Name="Prijavljenja" Type="datetime" Nullable="false" />
+          <Property Name="Okoncana" Type="datetime" Nullable="false" />
+          <Property Name="Smrtni_Ishod" Type="bit" Nullable="false" />
+          <Property Name="Terapija" Type="bit" Nullable="false" />
+          <Property Name="Opis_Pojave" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Bolest_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Period_Javljanja">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pocetak" Type="datetime" Nullable="false" />
+          <Property Name="Kraj" Type="datetime" Nullable="false" />
+          <Property Name="Bolest_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Grad__DrzavaId__71D1E811">
+          <End Role="Drzava" Type="Self.Drzava" Multiplicity="0..1" />
+          <End Role="Grad" Type="Self.Grad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drzava">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grad">
+              <PropertyRef Name="DrzavaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Instanca___Boles__619B8048">
+          <End Role="Bolest" Type="Self.Bolest" Multiplicity="1" />
+          <End Role="Instanca_Bolesti" Type="Self.Instanca_Bolesti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instanca_Bolesti">
+              <PropertyRef Name="Bolest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Period_Ja__Boles__6477ECF3">
+          <End Role="Bolest" Type="Self.Bolest" Multiplicity="1" />
+          <End Role="Period_Javljanja" Type="Self.Period_Javljanja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Period_Javljanja">
+              <PropertyRef Name="Bolest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_A42552_ArxyaArsaModelStoreContainer">
+          <EntitySet Name="Bolest" EntityType="Self.Bolest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Drzava" EntityType="Self.Drzava" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Epidemiolog" EntityType="Self.Epidemiolog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grad" EntityType="Self.Grad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instanca_Bolesti" EntityType="Self.Instanca_Bolesti" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Period_Javljanja" EntityType="Self.Period_Javljanja" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Grad__DrzavaId__71D1E811" Association="Self.FK__Grad__DrzavaId__71D1E811">
+            <End Role="Drzava" EntitySet="Drzava" />
+            <End Role="Grad" EntitySet="Grad" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Instanca___Boles__619B8048" Association="Self.FK__Instanca___Boles__619B8048">
+            <End Role="Bolest" EntitySet="Bolest" />
+            <End Role="Instanca_Bolesti" EntitySet="Instanca_Bolesti" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Period_Ja__Boles__6477ECF3" Association="Self.FK__Period_Ja__Boles__6477ECF3">
+            <End Role="Bolest" EntitySet="Bolest" />
+            <End Role="Period_Javljanja" EntitySet="Period_Javljanja" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_A42552_ArxyaArsaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DB_A42552_ArxyaArsaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bolest" EntityType="DB_A42552_ArxyaArsaModel.Bolest" />
+          <EntitySet Name="Drzava" EntityType="DB_A42552_ArxyaArsaModel.Drzava" />
+          <EntitySet Name="Epidemiolog" EntityType="DB_A42552_ArxyaArsaModel.Epidemiolog" />
+          <EntitySet Name="Grad" EntityType="DB_A42552_ArxyaArsaModel.Grad" />
+          <EntitySet Name="Instanca_Bolesti" EntityType="DB_A42552_ArxyaArsaModel.Instanca_Bolesti" />
+          <EntitySet Name="Period_Javljanja" EntityType="DB_A42552_ArxyaArsaModel.Period_Javljanja" />
+          <AssociationSet Name="FK__Instanca___Boles__571DF1D5" Association="DB_A42552_ArxyaArsaModel.FK__Instanca___Boles__571DF1D5">
+            <End Role="Bolest" EntitySet="Bolest" />
+            <End Role="Instanca_Bolesti" EntitySet="Instanca_Bolesti" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Period_Ja__Boles__59FA5E80" Association="DB_A42552_ArxyaArsaModel.FK__Period_Ja__Boles__59FA5E80">
+            <End Role="Bolest" EntitySet="Bolest" />
+            <End Role="Period_Javljanja" EntitySet="Period_Javljanja" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grad__DrzavaId__52593CB8" Association="DB_A42552_ArxyaArsaModel.FK__Grad__DrzavaId__52593CB8">
+            <End Role="Drzava" EntitySet="Drzava" />
+            <End Role="Grad" EntitySet="Grad" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Bolest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Latinski_Naziv" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Zarazna" Type="Boolean" Nullable="false" />
+          <Property Name="Trajanje" Type="Int32" Nullable="false" />
+          <Property Name="Zastita" Type="Boolean" Nullable="false" />
+          <Property Name="Tip" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Akutna" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Instanca_Bolesti" Relationship="DB_A42552_ArxyaArsaModel.FK__Instanca___Boles__571DF1D5" FromRole="Bolest" ToRole="Instanca_Bolesti" />
+          <NavigationProperty Name="Period_Javljanja" Relationship="DB_A42552_ArxyaArsaModel.FK__Period_Ja__Boles__59FA5E80" FromRole="Bolest" ToRole="Period_Javljanja" />
+          <Property Name="Prioritet" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Drzava">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Skracenica" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Grad" Relationship="DB_A42552_ArxyaArsaModel.FK__Grad__DrzavaId__52593CB8" FromRole="Drzava" ToRole="Grad" />
+        </EntityType>
+        <EntityType Name="Epidemiolog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Licni_Broj" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prezime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Lozinka" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Grad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Lokacija_X" Type="Double" Nullable="false" />
+          <Property Name="Lokacija_Y" Type="Double" Nullable="false" />
+          <Property Name="DrzavaId" Type="Int32" />
+          <NavigationProperty Name="Drzava" Relationship="DB_A42552_ArxyaArsaModel.FK__Grad__DrzavaId__52593CB8" FromRole="Grad" ToRole="Drzava" />
+          <Property Name="Broj_Stanovnika" Type="Int64" />
+        </EntityType>
+        <EntityType Name="Instanca_Bolesti">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lokacija_X" Type="Single" Nullable="false" />
+          <Property Name="Lokacija_Y" Type="Single" Nullable="false" />
+          <Property Name="Pol" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Starost" Type="Int32" Nullable="false" />
+          <Property Name="Otkrivena" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Prijavljenja" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Okoncana" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Smrtni_Ishod" Type="Boolean" Nullable="false" />
+          <Property Name="Terapija" Type="Boolean" Nullable="false" />
+          <Property Name="Opis_Pojave" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Bolest_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bolest" Relationship="DB_A42552_ArxyaArsaModel.FK__Instanca___Boles__571DF1D5" FromRole="Instanca_Bolesti" ToRole="Bolest" />
+        </EntityType>
+        <EntityType Name="Period_Javljanja">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pocetak" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Kraj" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Bolest_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bolest" Relationship="DB_A42552_ArxyaArsaModel.FK__Period_Ja__Boles__59FA5E80" FromRole="Period_Javljanja" ToRole="Bolest" />
+        </EntityType>
+        <Association Name="FK__Instanca___Boles__571DF1D5">
+          <End Type="DB_A42552_ArxyaArsaModel.Bolest" Role="Bolest" Multiplicity="1" />
+          <End Type="DB_A42552_ArxyaArsaModel.Instanca_Bolesti" Role="Instanca_Bolesti" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Instanca_Bolesti">
+              <PropertyRef Name="Bolest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Period_Ja__Boles__59FA5E80">
+          <End Type="DB_A42552_ArxyaArsaModel.Bolest" Role="Bolest" Multiplicity="1" />
+          <End Type="DB_A42552_ArxyaArsaModel.Period_Javljanja" Role="Period_Javljanja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bolest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Period_Javljanja">
+              <PropertyRef Name="Bolest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grad__DrzavaId__52593CB8">
+          <End Type="DB_A42552_ArxyaArsaModel.Drzava" Role="Drzava" Multiplicity="0..1" />
+          <End Type="DB_A42552_ArxyaArsaModel.Grad" Role="Grad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drzava">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grad">
+              <PropertyRef Name="DrzavaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_A42552_ArxyaArsaModelStoreContainer" CdmEntityContainer="DB_A42552_ArxyaArsaEntities">
+          <EntitySetMapping Name="Bolest">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Bolest">
+              <MappingFragment StoreEntitySet="Bolest">
+                <ScalarProperty Name="Prioritet" ColumnName="Prioritet" />
+                <ScalarProperty Name="Akutna" ColumnName="Akutna" />
+                <ScalarProperty Name="Tip" ColumnName="Tip" />
+                <ScalarProperty Name="Zastita" ColumnName="Zastita" />
+                <ScalarProperty Name="Trajanje" ColumnName="Trajanje" />
+                <ScalarProperty Name="Zarazna" ColumnName="Zarazna" />
+                <ScalarProperty Name="Latinski_Naziv" ColumnName="Latinski_Naziv" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drzava">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Drzava">
+              <MappingFragment StoreEntitySet="Drzava">
+                <ScalarProperty Name="Skracenica" ColumnName="Skracenica" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Epidemiolog">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Epidemiolog">
+              <MappingFragment StoreEntitySet="Epidemiolog">
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Licni_Broj" ColumnName="Licni_Broj" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grad">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Grad">
+              <MappingFragment StoreEntitySet="Grad">
+                <ScalarProperty Name="Broj_Stanovnika" ColumnName="Broj_Stanovnika" />
+                <ScalarProperty Name="DrzavaId" ColumnName="DrzavaId" />
+                <ScalarProperty Name="Lokacija_Y" ColumnName="Lokacija_Y" />
+                <ScalarProperty Name="Lokacija_X" ColumnName="Lokacija_X" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instanca_Bolesti">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Instanca_Bolesti">
+              <MappingFragment StoreEntitySet="Instanca_Bolesti">
+                <ScalarProperty Name="Bolest_Id" ColumnName="Bolest_Id" />
+                <ScalarProperty Name="Opis_Pojave" ColumnName="Opis_Pojave" />
+                <ScalarProperty Name="Terapija" ColumnName="Terapija" />
+                <ScalarProperty Name="Smrtni_Ishod" ColumnName="Smrtni_Ishod" />
+                <ScalarProperty Name="Okoncana" ColumnName="Okoncana" />
+                <ScalarProperty Name="Prijavljenja" ColumnName="Prijavljenja" />
+                <ScalarProperty Name="Otkrivena" ColumnName="Otkrivena" />
+                <ScalarProperty Name="Starost" ColumnName="Starost" />
+                <ScalarProperty Name="Pol" ColumnName="Pol" />
+                <ScalarProperty Name="Lokacija_Y" ColumnName="Lokacija_Y" />
+                <ScalarProperty Name="Lokacija_X" ColumnName="Lokacija_X" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Period_Javljanja">
+            <EntityTypeMapping TypeName="DB_A42552_ArxyaArsaModel.Period_Javljanja">
+              <MappingFragment StoreEntitySet="Period_Javljanja">
+                <ScalarProperty Name="Bolest_Id" ColumnName="Bolest_Id" />
+                <ScalarProperty Name="Kraj" ColumnName="Kraj" />
+                <ScalarProperty Name="Pocetak" ColumnName="Pocetak" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
